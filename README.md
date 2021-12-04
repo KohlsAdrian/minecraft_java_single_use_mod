@@ -1,4 +1,20 @@
 
+# Minecraft Java Edition Single Use Mod
+
+* Everytime you mine a block/item or attach a mob or player the item gets destroyed
+
+* Everytime your item is destroyed you earn XP
+
+* Everytime you kill a player, your XP multiplier is increased
+
+* Everytime you craft, your XP multiplier is increased
+
+* Everytime you die, the killer earns your total XP
+
+* Once you reach MAX LEVEL defined by the mod, mod is disabled for player (unless you enchant something and loses XP)
+
+# Developers
+
 Source installation information for modders
 -------------------------------------------
 This code follows the Minecraft Forge installation methodology. It will apply
