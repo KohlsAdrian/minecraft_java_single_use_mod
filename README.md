@@ -1,17 +1,74 @@
 
 # Minecraft Java Edition Single Use Mod
 
-* Everytime you mine a block/item or attach a mob or player the item gets destroyed
+## Features
 
-* Everytime your item is destroyed you earn XP
+* Everytime you mine a block/item or attack a mob/player the item gets destroyed
 
 * Everytime you kill a player, your XP multiplier is increased
 
-* Everytime you craft, your XP multiplier is increased
+* Everytime you smelft or craft, your XP multiplier is increased
 
 * Everytime you die, the killer earns your total XP
 
+* While you harvest a block you earn XP
+
 * Once you reach MAX LEVEL defined by the mod, mod is disabled for player (unless you enchant something and loses XP)
+
+* Many more...
+
+## Configuration - single_use_mod_properties.json
+
+<details>
+   <summary>Default Values</summary>
+
+   | Parameter                          | Default Values
+   |---|---|
+   | LEVEL_ADVANCEMENT_ACHIVEMENT       | 5                   
+   | KILL_EXPERIENCE_MULTIPLIER         | 5.0            
+   | CRAFT_SMELT_EXPERIENCE_MULTIPLIER  | 1.5            
+   | MAX_LEVEL_UNBREAKING_ITEMS         | 1000           
+   | ALWAYS_DROP_FULL_STACK             | false          
+   | HARVEST_BLOCK_XP                   | 1.0            
+   | PLAYER_KILL_XP                     | 100.0          
+   | SMELT_XP                           | 50.0           
+   | CRAFT_XP                           | 50.0           
+   | CHANGE_CHUNK_XP                    | 20.0           
+   | CHANGE_DIMENSION_XP                | 100.0          
+   | STOP_TRACK_XP                      | 15.0           
+   | START_TRACK_XP                     | 15.0           
+   | JUMP_XP                            | 1.0            
+   | TWIST_XP                           | 100.0          
+
+</details>
+
+<details>
+   <summary>Description</summary>
+
+   | Parameter                          | Description
+   |---|---|
+   | LEVEL_ADVANCEMENT_ACHIVEMENT       | Give player number of levels on new Achievement            
+   | KILL_EXPERIENCE_MULTIPLIER         | Increase killer experience multiplier after killing a player     
+   | CRAFT_SMELT_EXPERIENCE_MULTIPLIER  | Increase player experience multiplier after 
+   | MAX_LEVEL_UNBREAKING_ITEMS         | Max level where mod is disabled to player (watch out on enchants!)
+   | ALWAYS_DROP_FULL_STACK             | true: drop all stack, false: drop one item at a time
+   | HARVEST_BLOCK_XP                   | While harvesting before breaking block, earns XP
+   | PLAYER_KILL_XP                     | The name says it all!
+   | SMELT_XP                           | The name says it all!      
+   | CRAFT_XP                           | The name says it all!
+   | CHANGE_CHUNK_XP                    | Earn XP when reach a new chunk     
+   | CHANGE_DIMENSION_XP                | Earn XP when switch between Nether and Overworld
+   | STOP_TRACK_XP                      | The name says it all!
+   | START_TRACK_XP                     | The name says it all!     
+   | JUMP_XP                            | The name says it all!
+   | TWIST_XP                           | Earn XP when you break a block or attack a player/mob while holding any item        
+
+</details>
+
+
+---
+---
+---
 
 # Developers
 

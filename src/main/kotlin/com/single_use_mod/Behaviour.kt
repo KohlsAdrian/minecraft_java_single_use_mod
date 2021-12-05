@@ -52,7 +52,7 @@ class Behaviour {
 
         LEVEL_ADVANCEMENT_ACHIVEMENT = json["LEVEL_ADVANCEMENT_ACHIVEMENT"]!!.jsonPrimitive.int
         KILL_EXPERIENCE_MULTIPLIER = json["KILL_EXPERIENCE_MULTIPLIER"]!!.jsonPrimitive.float
-        CRAFT_SMELT_EXPERIENCE_MULTIPLIER = json["CRAFT_EXPERIENCE_MULTIPLIER"]!!.jsonPrimitive.float
+        CRAFT_SMELT_EXPERIENCE_MULTIPLIER = json["CRAFT_SMELT_EXPERIENCE_MULTIPLIER"]!!.jsonPrimitive.float
         MAX_LEVEL_UNBREAKING_ITEMS = json["MAX_LEVEL_UNBREAKING_ITEMS"]!!.jsonPrimitive.int
         ALWAYS_DROP_FULL_STACK = json["ALWAYS_DROP_FULL_STACK"]!!.jsonPrimitive.boolean
         HARVEST_BLOCK_XP = json["HARVEST_BLOCK_XP"]!!.jsonPrimitive.float
