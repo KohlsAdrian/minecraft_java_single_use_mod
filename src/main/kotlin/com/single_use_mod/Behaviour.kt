@@ -1,5 +1,6 @@
 package com.single_use_mod
 
+import java.util.*
 import net.minecraft.network.chat.TextComponent
 import net.minecraft.world.entity.ExperienceOrb
 import net.minecraft.world.entity.player.Inventory
@@ -14,7 +15,6 @@ import net.minecraftforge.event.entity.player.PlayerEvent.ItemCraftedEvent
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent
 import net.minecraftforge.event.world.BlockEvent.BreakEvent
 import net.minecraftforge.eventbus.api.SubscribeEvent
-import java.util.*
 
 class Behaviour {
 
@@ -52,10 +52,10 @@ class Behaviour {
         if (entity is Player) {
             val player = entity
             if (player.killCredit is Player) {
-                val killer = player.killCredit as Player?
+                val killer = player.killCredit as Player
                 val server = player.server
                 val playerList = server!!.playerList
-                val killerName = killer!!.name.string
+                val killerName = killer.name.string
                 val playerName = player.name.string
                 val points = player.experienceProgress
                 for (serverPlayer in playerList.players) {
@@ -82,7 +82,9 @@ class Behaviour {
         if (player != null) {
             val entity = event.entity
             if (entity is ExperienceOrb) {
-                if (player.experienceLevel >= MAX_LEVEL_UNBREAKING_ITEMS && player.experienceProgress > 0.0) {
+                if (player.experienceLevel >= MAX_LEVEL_UNBREAKING_ITEMS &&
+                                player.experienceProgress > 0.0
+                ) {
                     player.experienceProgress = 0f
                     player.experienceLevel = MAX_LEVEL_UNBREAKING_ITEMS
                 }
@@ -100,8 +102,8 @@ class Behaviour {
         }
     }
 
-    private fun mouse1Event(player: Player?) {
-        if (player != null && player.experienceLevel < MAX_LEVEL_UNBREAKING_ITEMS) {
+    private fun mouse1Event(player: Player) {
+        if (player.experienceLevel < MAX_LEVEL_UNBREAKING_ITEMS) {
             val itemStack = player.mainHandItem
             val itemId = Item.getId(itemStack.item)
             val inventory = player.inventory
@@ -139,5 +141,4 @@ class Behaviour {
     private fun increaseLevel(player: Player, levels: Int) {
         player.giveExperienceLevels(levels)
     }
-
 }
