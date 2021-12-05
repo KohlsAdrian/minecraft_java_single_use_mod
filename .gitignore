@@ -1,0 +1,8 @@
+.idea/
+.gradle/
+build/
+run/crash-reports/
+run/logs/
+run/world/
+run/saves/
+run/usercache.json
