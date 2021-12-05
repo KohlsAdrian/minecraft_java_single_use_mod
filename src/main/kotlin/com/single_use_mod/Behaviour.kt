@@ -1,7 +1,6 @@
 package com.single_use_mod
 
-import com.beust.klaxon.*
-import java.util.*
+import kotlinx.serialization.json.*
 import net.minecraft.network.chat.TextComponent
 import net.minecraft.world.entity.ExperienceOrb
 import net.minecraft.world.entity.player.Inventory
@@ -17,6 +16,7 @@ import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent
 import net.minecraftforge.event.world.BlockEvent.BreakEvent
 import net.minecraftforge.eventbus.api.SubscribeEvent
 import java.io.File
+import java.util.*
 
 class Behaviour {
 
@@ -27,16 +27,17 @@ class Behaviour {
     private var MAX_LEVEL_UNBREAKING_ITEMS = 1000
     private var ALWAYS_DROP_FULL_STACK = false
 
+    private val propertiesFileName = "single_use_mod_properties.json"
+
     init {
-        val file = File("single_use_mod_properties.json")
-        val pairs = Klaxon().parse<Map<String, Any>>(file)
-         if(pairs != null){
-             LEVEL_ADVANCEMENT_ACHIVEMENT = pairs["LEVEL_ADVANCEMENT_ACHIVEMENT"] as Int
-             KILL_EXPERIENCE_MULTIPLIER = pairs["KILL_EXPERIENCE_MULTIPLIER"] as Float
-             CRAFT_EXPERIENCE_MULTIPLIER = pairs["CRAFT_EXPERIENCE_MULTIPLIER"] as Float
-             MAX_LEVEL_UNBREAKING_ITEMS = pairs["MAX_LEVEL_UNBREAKING_ITEMS"] as Int
-             ALWAYS_DROP_FULL_STACK = pairs["ALWAYS_DROP_FULL_STACK"] as Boolean
-         }
+        val jsonElement = Json.parseToJsonElement(File(propertiesFileName).readText())
+        val json = jsonElement.jsonObject.toMap()
+
+        LEVEL_ADVANCEMENT_ACHIVEMENT = json["LEVEL_ADVANCEMENT_ACHIVEMENT"]!!.jsonPrimitive.int
+        KILL_EXPERIENCE_MULTIPLIER = json["KILL_EXPERIENCE_MULTIPLIER"]!!.jsonPrimitive.float
+        CRAFT_EXPERIENCE_MULTIPLIER = json["CRAFT_EXPERIENCE_MULTIPLIER"]!!.jsonPrimitive.float
+        MAX_LEVEL_UNBREAKING_ITEMS = json["MAX_LEVEL_UNBREAKING_ITEMS"]!!.jsonPrimitive.int
+        ALWAYS_DROP_FULL_STACK = json["ALWAYS_DROP_FULL_STACK"]!!.jsonPrimitive.boolean
     }
 
 

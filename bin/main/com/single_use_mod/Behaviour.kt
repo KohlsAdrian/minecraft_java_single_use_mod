@@ -1,7 +1,6 @@
 package com.single_use_mod
 
-import com.beust.klaxon.*
-import java.util.*
+import kotlinx.serialization.json.*
 import net.minecraft.network.chat.TextComponent
 import net.minecraft.world.entity.ExperienceOrb
 import net.minecraft.world.entity.player.Inventory
@@ -16,21 +15,31 @@ import net.minecraftforge.event.entity.player.PlayerEvent.ItemCraftedEvent
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent
 import net.minecraftforge.event.world.BlockEvent.BreakEvent
 import net.minecraftforge.eventbus.api.SubscribeEvent
+import java.io.File
+import java.util.*
 
 class Behaviour {
+
+    private val multipliers = object : HashMap<UUID?, Float?>() {}
+    private var LEVEL_ADVANCEMENT_ACHIVEMENT = 5
+    private var KILL_EXPERIENCE_MULTIPLIER = 5f
+    private var CRAFT_EXPERIENCE_MULTIPLIER = 1.5f
+    private var MAX_LEVEL_UNBREAKING_ITEMS = 1000
+    private var ALWAYS_DROP_FULL_STACK = false
+
+    private val propertiesFileName = "single_use_mod_properties.json"
+
     init {
-            val file = File("./src/main/resources/films.json")
-        val pair = Klaxon().parse(file);
+        val jsonElement = Json.parseToJsonElement(File(propertiesFileName).readText())
+        val json = jsonElement.jsonObject.toMap()
+
+        LEVEL_ADVANCEMENT_ACHIVEMENT = json["LEVEL_ADVANCEMENT_ACHIVEMENT"]!!.jsonPrimitive.int
+        KILL_EXPERIENCE_MULTIPLIER = json["KILL_EXPERIENCE_MULTIPLIER"]!!.jsonPrimitive.float
+        CRAFT_EXPERIENCE_MULTIPLIER = json["CRAFT_EXPERIENCE_MULTIPLIER"]!!.jsonPrimitive.float
+        MAX_LEVEL_UNBREAKING_ITEMS = json["MAX_LEVEL_UNBREAKING_ITEMS"]!!.jsonPrimitive.int
+        ALWAYS_DROP_FULL_STACK = json["ALWAYS_DROP_FULL_STACK"]!!.jsonPrimitive.boolean
     }
 
-    companion object {
-        private val multipliers = object : HashMap<UUID?, Float?>() {}
-        private var LEVEL_ADVANCEMENT_ACHIVEMENT = 5
-        private var KILL_EXPERIENCE_MULTIPLIER = 5f
-        private var CRAFT_EXPERIENCE_MULTIPLIER = 1.5f
-        private var MAX_LEVEL_UNBREAKING_ITEMS = 1000
-        private var ALWAYS_DROP_FULL_STACK = false
-    }
 
     @SubscribeEvent
     fun onPlayerConnected(event: PlayerLoggedInEvent) {

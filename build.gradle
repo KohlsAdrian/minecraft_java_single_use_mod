@@ -13,7 +13,6 @@ apply plugin: 'net.minecraftforge.gradle'
 // Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
-
 apply plugin: 'kotlin'
 apply from: 'https://raw.githubusercontent.com/thedarkcolour/KotlinForForge/site/thedarkcolour/kotlinforforge/gradle/kff-3.0.0.gradle'
 
@@ -81,6 +80,8 @@ minecraft {
             // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
             property 'forge.logging.console.level', 'debug'
 
+            args 'nogui'
+
             mods {
                 single_use_mod {
                     source sourceSets.main
@@ -127,6 +128,8 @@ repositories {
     // flatDir {
     //     dir 'libs'
     // }
+    maven { setUrl("https://plugins.gradle.org/m2") }
+
     maven {
         name = 'kotlinforforge'
         url = 'https://thedarkcolour.github.io/KotlinForForge/'
@@ -138,8 +141,7 @@ dependencies {
     // that the dep is a ForgeGradle 'patcher' dependency, and its patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
     minecraft 'net.minecraftforge:forge:1.18-38.0.8'
-    implementation 'thedarkcolour:kotlinforforge:1.16.0'
-    implementation 'com.beust:klaxon:5.5'
+    implementation('thedarkcolour:kotlinforforge:1.16.0')
 
     // Real mod deobf dependency examples - these get remapped to your current mappings
     // compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api") // Adds JEI API as a compile dependency
