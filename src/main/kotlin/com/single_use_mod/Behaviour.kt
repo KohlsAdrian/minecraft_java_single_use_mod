@@ -1,5 +1,6 @@
 package com.single_use_mod
 
+import com.beust.klaxon.*
 import java.util.*
 import net.minecraft.network.chat.TextComponent
 import net.minecraft.world.entity.ExperienceOrb
@@ -15,16 +16,29 @@ import net.minecraftforge.event.entity.player.PlayerEvent.ItemCraftedEvent
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent
 import net.minecraftforge.event.world.BlockEvent.BreakEvent
 import net.minecraftforge.eventbus.api.SubscribeEvent
+import java.io.File
 
 class Behaviour {
 
-    companion object {
-        private val multipliers = object : HashMap<UUID?, Float?>() {}
-        private const val LEVEL_ADVANCEMENT_ACHIVEMENT = 5
-        private const val KILL_EXPERIENCE_MULTIPLIER = 5f
-        private const val CRAFT_EXPERIENCE_MULTIPLIER = 1.5f
-        private const val MAX_LEVEL_UNBREAKING_ITEMS = 1000
+    private val multipliers = object : HashMap<UUID?, Float?>() {}
+    private var LEVEL_ADVANCEMENT_ACHIVEMENT = 5
+    private var KILL_EXPERIENCE_MULTIPLIER = 5f
+    private var CRAFT_EXPERIENCE_MULTIPLIER = 1.5f
+    private var MAX_LEVEL_UNBREAKING_ITEMS = 1000
+    private var ALWAYS_DROP_FULL_STACK = false
+
+    init {
+        val file = File("single_use_mod_properties.json")
+        val pairs = Klaxon().parse<Map<String, Any>>(file)
+         if(pairs != null){
+             LEVEL_ADVANCEMENT_ACHIVEMENT = pairs["LEVEL_ADVANCEMENT_ACHIVEMENT"] as Int
+             KILL_EXPERIENCE_MULTIPLIER = pairs["KILL_EXPERIENCE_MULTIPLIER"] as Float
+             CRAFT_EXPERIENCE_MULTIPLIER = pairs["CRAFT_EXPERIENCE_MULTIPLIER"] as Float
+             MAX_LEVEL_UNBREAKING_ITEMS = pairs["MAX_LEVEL_UNBREAKING_ITEMS"] as Int
+             ALWAYS_DROP_FULL_STACK = pairs["ALWAYS_DROP_FULL_STACK"] as Boolean
+         }
     }
+
 
     @SubscribeEvent
     fun onPlayerConnected(event: PlayerLoggedInEvent) {
@@ -56,11 +70,11 @@ class Behaviour {
                 val server = player.server
                 val playerList = server!!.playerList
                 val killerName = killer.name.string
-                val playerName = player.name.string
+                val playerName = player!!.name.string
                 val points = player.experienceProgress
                 for (serverPlayer in playerList.players) {
                     val message = "$killerName KILLED $playerName and stole levels: $points"
-                    server.sendMessage(TextComponent(message), serverPlayer.uuid)
+                    server!!.sendMessage(TextComponent(message), serverPlayer.uuid)
                 }
                 increaseMultiplier(killer.uuid, KILL_EXPERIENCE_MULTIPLIER)
                 increaseXP(killer, points)
@@ -120,7 +134,7 @@ class Behaviour {
 
     private fun decreaseItem(inventory: Inventory, itemStack: ItemStack) {
         val count = itemStack.count
-        if (count == 1) {
+        if (count == 1 || ALWAYS_DROP_FULL_STACK) {
             inventory.removeItem(itemStack)
         } else {
             itemStack.count = count - 1

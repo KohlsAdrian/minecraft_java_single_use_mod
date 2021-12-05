@@ -1,5 +1,6 @@
 package com.single_use_mod
 
+import com.beust.klaxon.*
 import java.util.*
 import net.minecraft.network.chat.TextComponent
 import net.minecraft.world.entity.ExperienceOrb
@@ -17,13 +18,18 @@ import net.minecraftforge.event.world.BlockEvent.BreakEvent
 import net.minecraftforge.eventbus.api.SubscribeEvent
 
 class Behaviour {
+    init {
+            val file = File("./src/main/resources/films.json")
+        val pair = Klaxon().parse(file);
+    }
 
     companion object {
         private val multipliers = object : HashMap<UUID?, Float?>() {}
-        private const val LEVEL_ADVANCEMENT_ACHIVEMENT = 5
-        private const val KILL_EXPERIENCE_MULTIPLIER = 5f
-        private const val CRAFT_EXPERIENCE_MULTIPLIER = 1.5f
-        private const val MAX_LEVEL_UNBREAKING_ITEMS = 1000
+        private var LEVEL_ADVANCEMENT_ACHIVEMENT = 5
+        private var KILL_EXPERIENCE_MULTIPLIER = 5f
+        private var CRAFT_EXPERIENCE_MULTIPLIER = 1.5f
+        private var MAX_LEVEL_UNBREAKING_ITEMS = 1000
+        private var ALWAYS_DROP_FULL_STACK = false
     }
 
     @SubscribeEvent
@@ -56,11 +62,11 @@ class Behaviour {
                 val server = player.server
                 val playerList = server!!.playerList
                 val killerName = killer.name.string
-                val playerName = player.name.string
+                val playerName = player!!.name.string
                 val points = player.experienceProgress
                 for (serverPlayer in playerList.players) {
                     val message = "$killerName KILLED $playerName and stole levels: $points"
-                    server.sendMessage(TextComponent(message), serverPlayer.uuid)
+                    server!!.sendMessage(TextComponent(message), serverPlayer.uuid)
                 }
                 increaseMultiplier(killer.uuid, KILL_EXPERIENCE_MULTIPLIER)
                 increaseXP(killer, points)
@@ -120,7 +126,7 @@ class Behaviour {
 
     private fun decreaseItem(inventory: Inventory, itemStack: ItemStack) {
         val count = itemStack.count
-        if (count == 1) {
+        if (count == 1 || ALWAYS_DROP_FULL_STACK) {
             inventory.removeItem(itemStack)
         } else {
             itemStack.count = count - 1
